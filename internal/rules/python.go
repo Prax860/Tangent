@@ -17,11 +17,15 @@ func (r CreateVenvRule) Match(
 		workspace == types.WorkspacePython
 }
 
-func (r CreateVenvRule) Generate() types.Command {
+func (r CreateVenvRule) Generate(
+	arguments map[string]string,
+) types.Command {
+
+	venv := arguments["venv"]
 
 	return types.Command{
-		Command:     "python -m venv .venv",
-		Explanation: "Creates a Python virtual environment.",
+		Command:     "python -m venv " + venv,
+		Explanation: "Creates Python virtual environment '" + venv + "'",
 		Safe:        true,
 	}
 }

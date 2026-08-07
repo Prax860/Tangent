@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/prax860/tangent/internal/pipelines"
+	"github.com/prax860/tangent/internal/preview"
 	"github.com/spf13/cobra"
 )
 
@@ -29,22 +30,9 @@ var runCmd = &cobra.Command{
 		input := strings.Join(args, " ")
 
 		// Process the request through the Tangent pipeline
-		response := pipeline.Process(input)	
+		response := pipeline.Process(input)
 
-		// Display results
-		fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-		fmt.Println("              ⚡ Tangent")
-		fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-		fmt.Println()
-
-		fmt.Printf("📝 Input       : %s\n", response.Request.RawInput)
-		fmt.Printf("🧹 Normalized  : %s\n", response.Request.Normalized)
-		fmt.Printf("🧠 Intent      : %s\n", response.Request.Intent)
-		fmt.Printf("📂 Workspace   : %s\n", response.Request.Workspace)
-		fmt.Println()
-		fmt.Printf("⚙️  Command     : %s\n", response.Command.Command)
-		fmt.Printf("🔒 Safe        : %t\n", response.Command.Safe)
-		fmt.Printf("💡 Explanation : %s\n", response.Command.Explanation)
+		preview.Show(response)
 	},
 }
 

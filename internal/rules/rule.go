@@ -3,7 +3,6 @@ package rules
 import "github.com/prax860/tangent/internal/types"
 
 type Rule interface {
-
 	Name() string
 
 	Match(
@@ -11,5 +10,7 @@ type Rule interface {
 		workspace types.WorkspaceType,
 	) bool
 
-	Generate() types.Command
+	Generate(
+		arguments map[string]string,
+	) types.Command
 }

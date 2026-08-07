@@ -12,7 +12,9 @@ func (r GitInitRule) Match(intent types.IntentType, workspace types.WorkspaceTyp
 	return intent == types.IntentGitInit
 }
 
-func (r GitInitRule) Generate() types.Command {
+func (r GitInitRule) Generate(
+	arguments map[string]string,
+) types.Command {
 	return types.Command{
 		Command:     "git init",
 		Explanation: "Initializes a new Git repository.",
@@ -32,11 +34,16 @@ func (r GitStatusRule) Name() string {
 	return "git.status"
 }
 
-func (r GitStatusRule) Match(intent types.IntentType, workspace types.WorkspaceType) bool {
+func (r GitStatusRule) Match(
+	intent types.IntentType,
+	workspace types.WorkspaceType,
+) bool {
 	return intent == types.IntentGitStatus
 }
 
-func (r GitStatusRule) Generate() types.Command {
+func (r GitStatusRule) Generate(
+	arguments map[string]string,
+) types.Command {
 	return types.Command{
 		Command:     "git status",
 		Explanation: "Displays the current Git repository status.",
@@ -60,10 +67,14 @@ func (r GitCreateBranchRule) Match(intent types.IntentType, workspace types.Work
 	return intent == types.IntentCreateBranch
 }
 
-func (r GitCreateBranchRule) Generate() types.Command {
+func (r GitCreateBranchRule) Generate(
+	arguments map[string]string,
+) types.Command {
+	branch := arguments["branch"]
+
 	return types.Command{
-		Command:     "git checkout -b <branch-name>",
-		Explanation: "Creates and switches to a new Git branch.",
+		Command:     "git checkout -b " + branch,
+		Explanation: "Creates and switches to a new Git branch '" + branch + "'",
 		Safe:        true,
 	}
 }
@@ -84,7 +95,9 @@ func (r GitPushRule) Match(intent types.IntentType, workspace types.WorkspaceTyp
 	return intent == types.IntentPushChanges
 }
 
-func (r GitPushRule) Generate() types.Command {
+func (r GitPushRule) Generate(
+	arguments map[string]string,
+) types.Command {
 	return types.Command{
 		Command:     "git push",
 		Explanation: "Pushes commits to the remote repository.",

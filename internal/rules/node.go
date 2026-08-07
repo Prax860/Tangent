@@ -13,10 +13,14 @@ func (r NodeInstallPackageRule) Match(intent types.IntentType, workspace types.W
 		workspace == types.WorkspaceNode
 }
 
-func (r NodeInstallPackageRule) Generate() types.Command {
+func (r NodeInstallPackageRule) Generate(
+	arguments map[string]string,
+) types.Command {
+	packageName := arguments["package"]
+
 	return types.Command{
-		Command:     "npm install <package>",
-		Explanation: "Installs a package using npm.",
+		Command:     "npm install " + packageName,
+		Explanation: "Installs Node.js package '" + packageName + "'",
 		Safe:        true,
 	}
 }
@@ -38,10 +42,14 @@ func (r NodeRunProjectRule) Match(intent types.IntentType, workspace types.Works
 		workspace == types.WorkspaceNode
 }
 
-func (r NodeRunProjectRule) Generate() types.Command {
+func (r NodeRunProjectRule) Generate(
+	arguments map[string]string,
+) types.Command {
+	file := arguments["file"]
+
 	return types.Command{
-		Command:     "npm run dev",
-		Explanation: "Starts the Node.js development server.",
+		Command:     "npm run " + file,
+		Explanation: "Starts the Node.js development server '" + file + "'",
 		Safe:        true,
 	}
 }

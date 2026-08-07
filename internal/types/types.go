@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 // =======================
 // Workspace Types
 // =======================
@@ -28,10 +30,10 @@ const (
 	IntentInstallPackage IntentType = "install_package"
 	IntentRunProject     IntentType = "run_project"
 
-	IntentGitInit       IntentType = "git_init"
-	IntentGitStatus     IntentType = "git_status"
-	IntentCreateBranch  IntentType = "create_branch"
-	IntentPushChanges   IntentType = "push_changes"
+	IntentGitInit      IntentType = "git_init"
+	IntentGitStatus    IntentType = "git_status"
+	IntentCreateBranch IntentType = "create_branch"
+	IntentPushChanges  IntentType = "push_changes"
 )
 
 // =======================
@@ -46,7 +48,6 @@ type Command struct {
 
 // =======================
 // Request Model
-// (Will be used later by the Pipeline)
 // =======================
 
 type Request struct {
@@ -61,10 +62,21 @@ type Request struct {
 
 // =======================
 // Response Model
-// (Pipeline Output)
 // =======================
 
 type Response struct {
 	Request Request
 	Command Command
+}
+
+// =======================
+// Execution Result
+// =======================
+
+type ExecutionResult struct {
+	Command  string
+	Stdout   string
+	Stderr   string
+	ExitCode int
+	Duration time.Duration
 }

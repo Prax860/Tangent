@@ -11,7 +11,7 @@ func Generate(
 	for _, rule := range Rules() {
 
 		if rule.Match(intent, workspace) {
-			return rule.Generate()
+			return rule.Generate(arguments)
 		}
 
 	}
