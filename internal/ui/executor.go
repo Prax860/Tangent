@@ -1,4 +1,4 @@
-package executor
+package ui
 
 import (
 	"bytes"
@@ -25,18 +25,24 @@ func Execute(command types.Command) types.ExecutionResult {
 	exitCode := 0
 
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			exitCode = exitErr.ExitCode()
+
+		if e, ok := err.(*exec.ExitError); ok {
+			exitCode = e.ExitCode()
 		} else {
 			exitCode = -1
 		}
 	}
 
 	return types.ExecutionResult{
-		Command:  command.Command,
-		Stdout:   stdout.String(),
-		Stderr:   stderr.String(),
+
+		Command: command.Command,
+
+		Stdout: stdout.String(),
+
+		Stderr: stderr.String(),
+
 		ExitCode: exitCode,
+
 		Duration: time.Since(start),
 	}
 }

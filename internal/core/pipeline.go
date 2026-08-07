@@ -1,23 +1,26 @@
-package pipeline
+package core
 
 import (
-	"github.com/prax860/tangent/internal/entities"
-	"github.com/prax860/tangent/internal/intents"
-	"github.com/prax860/tangent/internal/parser"
 	"github.com/prax860/tangent/internal/rules"
 	"github.com/prax860/tangent/internal/types"
-	"github.com/prax860/tangent/internal/workspace"
 )
 
 func Process(input string) types.Response {
 
-	normalized := parser.Parse(input)
+	normalized := Parse(input)
 
-	intent := intents.Resolve(normalized)
+	intent := Resolve(normalized)
 
-	arguments := entities.Extract(normalized, intent)
+	arguments := Extract(normalized, intent)
 
-	workspaceType := workspace.Detect()
+	workspaceType := Detect()
+
+	if pkg, ok := arguments["package"]; ok {
+
+		resolved := ResolveForWorkspace(workspaceType, pkg)
+
+		arguments["package"] = resolved.Target
+	}
 
 	command := rules.Generate(
 		intent,

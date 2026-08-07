@@ -12,7 +12,6 @@ func (r CreateVenvRule) Match(
 	intent types.IntentType,
 	workspace types.WorkspaceType,
 ) bool {
-
 	return intent == types.IntentCreateVenv &&
 		workspace == types.WorkspacePython
 }
@@ -21,11 +20,16 @@ func (r CreateVenvRule) Generate(
 	arguments map[string]string,
 ) types.Command {
 
-	venv := arguments["venv"]
+	venv, ok := arguments["venv"]
+
+	// Default virtual environment name
+	if !ok || venv == "" {
+		venv = ".venv"
+	}
 
 	return types.Command{
 		Command:     "python -m venv " + venv,
-		Explanation: "Creates Python virtual environment '" + venv + "'",
+		Explanation: "Creates a Python virtual environment named '" + venv + "'.",
 		Safe:        true,
 	}
 }

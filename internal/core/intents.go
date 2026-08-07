@@ -1,4 +1,4 @@
-package intents
+package core
 
 import (
 	"strings"
