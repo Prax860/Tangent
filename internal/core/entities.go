@@ -1,11 +1,9 @@
 package core
-
 import (
 	"strings"
 
 	"github.com/prax860/tangent/internal/types"
 )
-
 func Extract(input string, intent types.IntentType) map[string]string {
 
 	args := make(map[string]string)
