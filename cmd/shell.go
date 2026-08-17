@@ -69,9 +69,26 @@ var shellCmd = &cobra.Command{
 				continue
 			}
 
+			if response.Command.Interactive {
+				fmt.Println()
+				fmt.Println("⚡ Running...")
+				fmt.Println()
+			}
+
 			result := ui.Execute(response.Command)
 
 			fmt.Println()
+
+			if response.Command.Interactive {
+				if result.ExitCode == 0 {
+					fmt.Println("✓ Command completed successfully.")
+				} else {
+					fmt.Printf("✗ Command failed with exit code %d.\n", result.ExitCode)
+				}
+				fmt.Printf("Duration : %v\n", result.Duration)
+				fmt.Println()
+				continue
+			}
 
 			fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 			fmt.Println("Execution Result")
@@ -119,6 +136,8 @@ func printHelp() {
 	fmt.Println("install gin")
 	fmt.Println("git status")
 	fmt.Println("create virtual environment")
+	fmt.Println("create react app")
+	fmt.Println("docker init")
 	fmt.Println()
 
 }

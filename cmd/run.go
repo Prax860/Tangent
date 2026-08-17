@@ -23,21 +23,34 @@ var runCmd = &cobra.Command{
 
 		input := strings.Join(args, " ")
 
-		// Process through the pipeline
 		response := core.Process(input)
 
-		// Show preview
 		ui.Show(response)
 
-		// Ask before executing
 		if !ui.Ask(response.Command) {
 			fmt.Println()
 			fmt.Println("❌ Command cancelled.")
 			return
 		}
 
-		// Execute generated command
+		if response.Command.Interactive {
+			fmt.Println()
+			fmt.Println("⚡ Running...")
+			fmt.Println()
+		}
+
 		result := ui.Execute(response.Command)
+
+		if response.Command.Interactive {
+			fmt.Println()
+			if result.ExitCode == 0 {
+				fmt.Println("✓ Command completed successfully.")
+			} else {
+				fmt.Printf("✗ Command failed with exit code %d.\n", result.ExitCode)
+			}
+			fmt.Printf("Duration : %v\n", result.Duration)
+			return
+		}
 
 		fmt.Println()
 		fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")

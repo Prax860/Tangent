@@ -2,53 +2,98 @@ package ui
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/prax860/tangent/internal/types"
 )
 
 func Show(response types.Response) {
 
-	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-	fmt.Println("              ⚡ Tangent")
-	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-	fmt.Println()
+	var b strings.Builder
 
-	fmt.Println("📝 Request")
-	fmt.Println(response.Request.RawInput)
+	// ── Title ───────────────────────────────────
+	b.WriteString(CompactTitle.Render("⚡ Tangent"))
+	b.WriteString("\n\n")
 
-	fmt.Println()
+	// ── Intent + Workspace (aligned 2-col) ─────
+	intentRow := fmt.Sprintf(
+		"  %-11s %s",
+		CompactLabel.Render("Intent"),
+		CompactValue.Render(string(response.Request.Intent)),
+	)
+	workspaceRow := fmt.Sprintf(
+		"  %-11s %s",
+		CompactLabel.Render("Workspace"),
+		CompactValue.Render(string(response.Request.Workspace)),
+	)
+	b.WriteString(intentRow + "\n" + workspaceRow + "\n\n")
 
-	fmt.Println("🧠 Intent")
-	fmt.Println(response.Request.Intent)
+	// ── Command with arrow ──────────────────────
+	b.WriteString(
+		"  " +
+			CompactArrow.Render("→") +
+			" " +
+			CompactCommand.Render(response.Command.Command) +
+			"\n\n",
+	)
 
-	fmt.Println()
-
-	fmt.Println("📂 Workspace")
-	fmt.Println(response.Request.Workspace)
-
-	fmt.Println()
-
-	if len(response.Request.Arguments) > 0 {
-
-		fmt.Println("📦 Arguments")
-
-		for key, value := range response.Request.Arguments {
-			fmt.Printf("%s : %s\n", key, value)
-		}
-
-		fmt.Println()
+	// ── Safety pill ─────────────────────────────
+	if response.Command.Safe {
+		b.WriteString("  " + CompactSafe.Render("✓ SAFE"))
+	} else {
+		b.WriteString("  " + CompactUnsafe.Render("✗ UNSAFE"))
 	}
 
-	fmt.Println("⚙ Generated Command")
-	fmt.Println(response.Command.Command)
+	// ── Interactive pill if applicable ──────────
+	if response.Command.Interactive {
+		b.WriteString("\n  " + CompactInteractive.Render("⚡ INTERACTIVE"))
+	}
 
-	fmt.Println()
+	b.WriteString("\n")
 
-	fmt.Println("💡 Explanation")
-	fmt.Println(response.Command.Explanation)
-
-	fmt.Println()
-
-	fmt.Println("🔒 Safe :", response.Command.Safe)
-
+	fmt.Println(b.String())
 }
+
+// ─── Compact UI styles ──────────────────────────────────
+
+var (
+	CompactTitle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#1B1030")).
+			Padding(0, 2)
+
+	CompactLabel = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("#9C6BFF"))
+
+	CompactValue = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#E8EBFF"))
+
+	CompactArrow = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#00F0FF")).
+			Bold(true)
+
+	CompactCommand = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#39FF88")).
+			Bold(true)
+
+	CompactSafe = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#00110A")).
+			Background(lipgloss.Color("#39FF88")).
+			Bold(true).
+			Padding(0, 2)
+
+	CompactUnsafe = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#2A0008")).
+			Background(lipgloss.Color("#FF4D6D")).
+			Bold(true).
+			Padding(0, 2)
+
+	CompactInteractive = lipgloss.NewStyle().
+				Foreground(lipgloss.Color("#0D0F1A")).
+				Background(lipgloss.Color("#FFD23F")).
+				Bold(true).
+				Padding(0, 2)
+)

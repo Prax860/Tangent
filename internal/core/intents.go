@@ -16,6 +16,22 @@ func Resolve(input string) types.IntentType {
 
 		return types.IntentCreateVenv
 
+	case strings.HasPrefix(input, "create project"),
+		strings.Contains(input, "create react app"),
+		strings.Contains(input, "create next app"),
+		strings.Contains(input, "create vue app"),
+		strings.Contains(input, "create svelte app"),
+		strings.Contains(input, "scaffold"),
+		strings.Contains(input, "init project"),
+		strings.Contains(input, "docker init"),
+		strings.HasPrefix(input, "npm create"),
+		strings.HasPrefix(input, "npx create"),
+		(strings.HasPrefix(input, "create") && strings.Contains(input, "app")),
+		(strings.HasPrefix(input, "cargo") && strings.Contains(input, "init")),
+		(strings.Contains(input, "cargo init")):
+
+		return types.IntentCreateProject
+
 	case strings.HasPrefix(input, "install"):
 
 		return types.IntentInstallPackage

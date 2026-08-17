@@ -11,6 +11,7 @@ func (r CreateVenvRule) Name() string {
 func (r CreateVenvRule) Match(
 	intent types.IntentType,
 	workspace types.WorkspaceType,
+	_ map[string]string,
 ) bool {
 	return intent == types.IntentCreateVenv &&
 		workspace == types.WorkspacePython

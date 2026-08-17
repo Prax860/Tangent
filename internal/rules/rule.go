@@ -8,6 +8,7 @@ type Rule interface {
 	Match(
 		intent types.IntentType,
 		workspace types.WorkspaceType,
+		arguments map[string]string,
 	) bool
 
 	Generate(

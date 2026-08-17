@@ -27,6 +27,7 @@ const (
 	IntentUnknown IntentType = "unknown"
 
 	IntentCreateVenv     IntentType = "create_venv"
+	IntentCreateProject  IntentType = "create_project"
 	IntentInstallPackage IntentType = "install_package"
 	IntentRunProject     IntentType = "run_project"
 
@@ -44,6 +45,7 @@ type Command struct {
 	Command     string
 	Explanation string
 	Safe        bool
+	Interactive bool
 }
 
 // =======================

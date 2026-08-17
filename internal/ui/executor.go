@@ -2,6 +2,7 @@ package ui
 
 import (
 	"bytes"
+	"os"
 	"os/exec"
 	"time"
 
@@ -17,8 +18,17 @@ func Execute(command types.Command) types.ExecutionResult {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+	if command.Interactive {
+
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+	} else {
+
+		cmd.Stdout = &stdout
+		cmd.Stderr = &stderr
+	}
 
 	err := cmd.Run()
 

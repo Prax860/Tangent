@@ -18,12 +18,12 @@ func Ask(command types.Command) bool {
 		fmt.Println(command.Explanation)
 		fmt.Println()
 
-		fmt.Print("Continue anyway? (y/N): ")
+		fmt.Print("Continue anyway? [y/N]: ")
 
 	} else {
 
 		fmt.Println()
-		fmt.Print("Execute command? (y/N): ")
+		fmt.Print("Execute? [Y/n]: ")
 
 	}
 
@@ -32,6 +32,10 @@ func Ask(command types.Command) bool {
 	input, _ := reader.ReadString('\n')
 
 	input = strings.TrimSpace(strings.ToLower(input))
+
+	if input == "" {
+		return command.Safe
+	}
 
 	return input == "y" || input == "yes"
 }

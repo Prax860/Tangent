@@ -8,7 +8,7 @@ func (r GitInitRule) Name() string {
 	return "git.init"
 }
 
-func (r GitInitRule) Match(intent types.IntentType, workspace types.WorkspaceType) bool {
+func (r GitInitRule) Match(intent types.IntentType, workspace types.WorkspaceType, _ map[string]string) bool {
 	return intent == types.IntentGitInit
 }
 
@@ -37,6 +37,7 @@ func (r GitStatusRule) Name() string {
 func (r GitStatusRule) Match(
 	intent types.IntentType,
 	workspace types.WorkspaceType,
+	_ map[string]string,
 ) bool {
 	return intent == types.IntentGitStatus
 }
@@ -63,7 +64,7 @@ func (r GitCreateBranchRule) Name() string {
 	return "git.branch"
 }
 
-func (r GitCreateBranchRule) Match(intent types.IntentType, workspace types.WorkspaceType) bool {
+func (r GitCreateBranchRule) Match(intent types.IntentType, workspace types.WorkspaceType, _ map[string]string) bool {
 	return intent == types.IntentCreateBranch
 }
 
@@ -91,7 +92,7 @@ func (r GitPushRule) Name() string {
 	return "git.push"
 }
 
-func (r GitPushRule) Match(intent types.IntentType, workspace types.WorkspaceType) bool {
+func (r GitPushRule) Match(intent types.IntentType, workspace types.WorkspaceType, _ map[string]string) bool {
 	return intent == types.IntentPushChanges
 }
 

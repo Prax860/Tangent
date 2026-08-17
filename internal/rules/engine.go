@@ -10,7 +10,7 @@ func Generate(
 
 	for _, rule := range Rules() {
 
-		if rule.Match(intent, workspace) {
+		if rule.Match(intent, workspace, arguments) {
 			return rule.Generate(arguments)
 		}
 
